@@ -8,11 +8,14 @@ conn = sqlite3.connect("expenses.db")
 c = conn.cursor()
 
 # Create expenses table if not exists
-c.execute(
-    """CREATE TABLE IF NOT EXISTS expenses
+try:
+    c.execute(
+        """CREATE TABLE IF NOT EXISTS expenses
              (id INTEGER PRIMARY KEY, category TEXT, amount REAL, date TEXT)"""
-)
-conn.commit()
+    )
+    conn.commit()
+except sqlite3.Error as e:
+    print("Error creating expenses table:", e)
 
 
 # Function to add expense to database
