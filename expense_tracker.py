@@ -2,6 +2,8 @@ import tkinter as tk
 from tkinter import messagebox
 import sqlite3
 from matplotlib import pyplot as plt
+from datetime import datetime
+
 
 # Database initialization
 conn = sqlite3.connect("expenses.db")
