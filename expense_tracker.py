@@ -67,6 +67,10 @@ def update_graph():
         data = c.fetchall()
         categories = [row[0] for row in data]
         amounts = [row[1] for row in data]
+        # Convert date format from YYYY-MM-DD to DD/MM/YYYY
+        dates = [
+            datetime.strptime(row[2], "%Y-%m-%d").strftime("%d/%m/%Y") for row in data
+        ]
 
         plt.figure(figsize=(6, 4))
         plt.bar(categories, amounts)
