@@ -97,7 +97,7 @@ root.title("Expense Tracker")
 # Labels
 tk.Label(root, text="Category:").grid(row=0, column=0, padx=5, pady=5)
 tk.Label(root, text="Amount:").grid(row=1, column=0, padx=5, pady=5)
-tk.Label(root, text="Date (YYYY-MM-DD):").grid(row=2, column=0, padx=5, pady=5)
+tk.Label(root, text="Date (DD/MM/YYYY):").grid(row=2, column=0, padx=5, pady=5)
 
 # Entry fields
 category_entry = tk.Entry(root)
