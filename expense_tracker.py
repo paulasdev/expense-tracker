@@ -32,3 +32,10 @@ def add_expense():
         update_graph()
     else:
         messagebox.showerror("Error", "Please fill in all fields.")
+
+
+# Function to clear entry fields
+def clear_entries():
+    category_entry.delete(0, tk.END)
+    amount_entry.delete(0, tk.END)
+    date_entry.delete(0, tk.END)
