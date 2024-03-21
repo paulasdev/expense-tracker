@@ -24,23 +24,23 @@ except sqlite3.Error as e:
 def add_expense():
     category = category_entry.get()
     amount = amount_entry.get()
-    date = date_entry.get()
+    input_date = date_entry.get()
 
-    # Convert date format from input format to DD/MM/YYYY
+    # Convert date format from input format (DD/MM/YYYY) to database format (YYYY-MM-DD)
     try:
-        date_obj = datetime.strptime(date, "%Y-%m-%d")
-        formatted_date = date_obj.strftime("%d/%m/%Y")
+        date_obj = datetime.strptime(input_date, "%d/%m/%Y")
+        formatted_date = date_obj.strftime("%Y-%m-%d")
     except ValueError:
         messagebox.showerror(
-            "Error", "Invalid date format. Please enter date in YYYY-MM-DD format."
+            "Error", "Invalid date format. Please enter date in DD/MM/YYYY format."
         )
         return
 
-    if category and amount and date:
+    if category and amount and input_date:
         try:
             c.execute(
                 "INSERT INTO expenses (category, amount, date) VALUES (?, ?, ?)",
-                (category, amount, date),
+                (category, amount, input_date),
             )
             conn.commit()
             messagebox.showinfo("Success", "Expense added successfully!")
@@ -69,10 +69,6 @@ def update_graph():
         data = c.fetchall()
         categories = [row[0] for row in data]
         amounts = [row[1] for row in data]
-        # Convert date format from YYYY-MM-DD to DD/MM/YYYY
-        dates = [
-            datetime.strptime(row[2], "%Y-%m-%d").strftime("%d/%m/%Y") for row in data
-        ]
 
         plt.figure(figsize=(6, 4))
         plt.bar(categories, amounts)
@@ -87,9 +83,6 @@ def update_graph():
             "Database Error",
             "An error occurred while retrieving expense data: " + str(e),
         )
-
-
-# GUI setup
 
 
 # GUI setup
