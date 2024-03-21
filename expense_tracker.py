@@ -39,3 +39,20 @@ def clear_entries():
     category_entry.delete(0, tk.END)
     amount_entry.delete(0, tk.END)
     date_entry.delete(0, tk.END)
+
+
+# Function to update expense graph
+def update_graph():
+    c.execute("SELECT category, SUM(amount) FROM expenses GROUP BY category")
+    data = c.fetchall()
+    categories = [row[0] for row in data]
+    amounts = [row[1] for row in data]
+
+    plt.figure(figsize=(6, 4))
+    plt.bar(categories, amounts)
+    plt.xlabel("Categories")
+    plt.ylabel("Amount")
+    plt.title("Expense Distribution")
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+    plt.show()
