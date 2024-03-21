@@ -24,15 +24,31 @@ def add_expense():
     amount = amount_entry.get()
     date = date_entry.get()
 
-    if category and amount and date:
-        c.execute(
-            "INSERT INTO expenses (category, amount, date) VALUES (?, ?, ?)",
-            (category, amount, date),
+    # Convert date format from input format to DD/MM/YYYY
+    try:
+        date_obj = datetime.strptime(date, "%Y-%m-%d")
+        formatted_date = date_obj.strftime("%d/%m/%Y")
+    except ValueError:
+        messagebox.showerror(
+            "Error", "Invalid date format. Please enter date in YYYY-MM-DD format."
         )
-        conn.commit()
-        messagebox.showinfo("Success", "Expense added successfully!")
-        clear_entries()
-        update_graph()
+        return
+
+    if category and amount and date:
+        try:
+            c.execute(
+                "INSERT INTO expenses (category, amount, date) VALUES (?, ?, ?)",
+                (category, amount, date),
+            )
+            conn.commit()
+            messagebox.showinfo("Success", "Expense added successfully!")
+            clear_entries()
+            update_graph()
+        except sqlite3.Error as e:
+            messagebox.showerror(
+                "Database Error",
+                "An error occurred while adding the expense: " + str(e),
+            )
     else:
         messagebox.showerror("Error", "Please fill in all fields.")
 
@@ -46,19 +62,28 @@ def clear_entries():
 
 # Function to update expense graph
 def update_graph():
-    c.execute("SELECT category, SUM(amount) FROM expenses GROUP BY category")
-    data = c.fetchall()
-    categories = [row[0] for row in data]
-    amounts = [row[1] for row in data]
+    try:
+        c.execute("SELECT category, SUM(amount) FROM expenses GROUP BY category")
+        data = c.fetchall()
+        categories = [row[0] for row in data]
+        amounts = [row[1] for row in data]
 
-    plt.figure(figsize=(6, 4))
-    plt.bar(categories, amounts)
-    plt.xlabel("Categories")
-    plt.ylabel("Amount")
-    plt.title("Expense Distribution")
-    plt.xticks(rotation=45)
-    plt.tight_layout()
-    plt.show()
+        plt.figure(figsize=(6, 4))
+        plt.bar(categories, amounts)
+        plt.xlabel("Categories")
+        plt.ylabel("Amount")
+        plt.title("Expense Distribution")
+        plt.xticks(rotation=45)
+        plt.tight_layout()
+        plt.show()
+    except sqlite3.Error as e:
+        messagebox.showerror(
+            "Database Error",
+            "An error occurred while retrieving expense data: " + str(e),
+        )
+
+
+# GUI setup
 
 
 # GUI setup
