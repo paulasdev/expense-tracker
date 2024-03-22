@@ -4,7 +4,7 @@ Expense Tracker is a Python script designed to help individuals track their expe
 
 This project aims to simplify the process of managing personal finances by offering a convenient tool for monitoring expenses and gaining insights into spending habits.
 
-![Expense_Tracker](/expensetracker.png)
+![Expense_Tracker](/expense-tracker/image_expensetracker.png)
 
 ## Technologies Used
 
